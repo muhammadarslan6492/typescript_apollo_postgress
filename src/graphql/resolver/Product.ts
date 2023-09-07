@@ -1,4 +1,4 @@
-import { objectType, extendType } from 'nexus';
+import { objectType, extendType, nonNull, stringArg, floatArg } from 'nexus';
 
 import { NexusGenObjects } from '../../../nexus.typegen';
 
@@ -11,6 +11,8 @@ export const ProductType = objectType({
   },
 });
 
+
+// create product list
 let products: NexusGenObjects['Product'][] = [
   {
     id: 1,
@@ -35,3 +37,26 @@ export const ProductsQuery = extendType({
     });
   },
 });
+
+export const createProductMutation = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("createProduct", {
+      type: "Product",
+      args: {
+        name: nonNull(stringArg()),
+        price: nonNull(floatArg())
+      },
+      resolve(_parent, args, _context, _info) {
+        const {name, price} = args
+        const product = {
+          id: products.length + 1,
+          name, 
+          price 
+        }
+        products.push(product)
+        return product
+      }
+    })
+  },
+})

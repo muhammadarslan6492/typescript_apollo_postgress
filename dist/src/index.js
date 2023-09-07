@@ -5,7 +5,7 @@ const schema_1 = require("./schema");
 const boot = () => {
     const server = new apollo_server_1.ApolloServer({ schema: schema_1.schema });
     server
-        .listen(500)
+        .listen(5000)
         .then(({ url }) => {
         console.log(`server running on ${url}`);
     })
